@@ -1,5 +1,7 @@
+package ru.geekbrains;
+
 import java.sql.*;
-import org.sqlite.JDBC;
+
 
 
 /**

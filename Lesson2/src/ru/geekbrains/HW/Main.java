@@ -1,4 +1,4 @@
-package HW;
+package ru.geekbrains.HW;
 
 import java.io.IOException;
 import java.io.InputStream;
