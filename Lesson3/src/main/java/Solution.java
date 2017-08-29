@@ -8,10 +8,11 @@ public class Solution {
 
     public static void main(String[] args) throws IOException {
         long timeStart = System.currentTimeMillis();
-        TestFileCreator.createTextFile();
-        readFileToConsole(TestFileCreator.textFile);
+        //TestFileCreator.createTextFile();
+        File tstFile = new File("TestFolder/TestTextFile.txt");
+        readFileToConsole(tstFile);
         System.out.println("Общее время ввода-вывода(мс): " + (System.currentTimeMillis() - timeStart));
-        System.out.println("Размер файла: " + TestFileCreator.textFile.length());
+        System.out.println("Размер файла: " + tstFile.length());
     }
 
     public static void main2(String[] args) throws IOException {
@@ -96,42 +97,29 @@ public class Solution {
 
     //Задание 3
     public static void readFileToConsole(File file){
-        int pointer = 0;
-        int counter = 0;
+
+        final int pageToOpen = 10;
+        final int PAGE_SIZE = 1800;
+
+        int pointer = pageToOpen * PAGE_SIZE;
+
         RandomAccessFile raf = null;
-        FileInputStream fis = null;
-        BufferedInputStream bis = null;
+
         try{
             raf = new RandomAccessFile(file,"r");
-            fis = new FileInputStream(raf.getFD());
-            bis = new BufferedInputStream(fis);
-
             raf.seek(pointer);
-            while(counter < 1800){
-                byte[] b = new byte[1800];
-                int charByte = bis.read(b);
-                if(charByte == -1) {
-                    return;
-                }
-                counter++;
-
-                if(counter == 1799) {
-                    System.out.println(new String(b));
-                    pointer = pointer + 1799;
-                    bis = new BufferedInputStream(fis);
-                    raf.seek(pointer);
-                    counter = 0;
-                }
-            }
+            byte[] b = new byte[PAGE_SIZE];
+            raf.read(b);
+            System.out.println(new String(b));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
-                raf.close();
-                fis.close();
-                bis.close();
+                if (raf != null){
+                    raf.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
